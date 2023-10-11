@@ -43,7 +43,7 @@ public class Player_Interactor : MonoBehaviour
             Interact();
         }
 
-        ActiveStuffs();
+        ActiveAlert();
         DrawSight();
     }
 
@@ -81,30 +81,29 @@ public class Player_Interactor : MonoBehaviour
         return new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
     }
 
-    private void ActiveStuffs()
+    private void ActiveAlert()
     {
         if (ElementInFront().collider != null)
         {
-            fsdafs();
+            HighlightNewAlert();
         }
         else
         {
-            asa();
+            DisableCurrentAlert();
         }
     }
 
-    void asa()
+    void DisableCurrentAlert()
     {
-        // Si el objeto está activado, desactívalo y actualiza la variable booleana
         if (alertObj != null && alertObj.activeSelf)
         {
             alertObj.SetActive(false);
         }
     }
 
-    void fsdafs()
+    void HighlightNewAlert()
     {
-        GameObject newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
+        var newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
 
         if (!newAlertObj.activeSelf)
         {
