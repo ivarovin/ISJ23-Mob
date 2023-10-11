@@ -69,15 +69,18 @@ namespace Player
 
         private void PlayerMoveImprove()
         {
-            Vector2 targetSpeed = TargetSpeed(movement, speed);
-            Vector2 accelRate = new Vector2((Mathf.Abs(targetSpeed.x) > 0.01f) ? runAccelAmount : runDeccelAmount,
-                (Mathf.Abs(targetSpeed.y) > 0.01f) ? runAccelAmount : runDeccelAmount);
-            Vector2 speedDif = SpeedDifference(targetSpeed, rb2d.velocity);
-            Vector2 rate = new Vector2(speedDif.x * accelRate.x, speedDif.y * accelRate.y);
-            
-            rb2d.AddForce(rate, ForceMode2D.Force);
-        }
+            Vector2 accelRate = new Vector2((Mathf.Abs(TargetSpeed(movement, speed).x) > 0.01f) ? runAccelAmount : runDeccelAmount,
+                (Mathf.Abs(TargetSpeed(movement, speed).y) > 0.01f) ? runAccelAmount : runDeccelAmount);
+            Vector2 speedDif = SpeedDifference(TargetSpeed(movement, speed), rb2d.velocity);
 
+            rb2d.AddForce(ApplyAcceleration(speedDif, accelRate), ForceMode2D.Force);
+        }
+        
+        public static Vector2 ApplyAcceleration(Vector2 targetSpeed, Vector2 acceleration)
+        {
+            return new Vector2(targetSpeed.x * acceleration.x, targetSpeed.y * acceleration.y);
+        }
+        
         public static Vector2 SpeedDifference(Vector2 targetSpeed, Vector2 velocity)
         {
             return new Vector2(targetSpeed.x - velocity.x, targetSpeed.y - velocity.y);
