@@ -85,21 +85,31 @@ public class Player_Interactor : MonoBehaviour
     {
         if (ElementInFront().collider != null)
         {
-            GameObject newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
-
-            if (!newAlertObj.activeSelf)
-            {
-                newAlertObj.SetActive(true);
-                alertObj = newAlertObj; // Actualiza la referencia
-            }
+            fsdafs();
         }
         else
         {
-            // Si el objeto está activado, desactívalo y actualiza la variable booleana
-            if (alertObj != null && alertObj.activeSelf)
-            {
-                alertObj.SetActive(false);
-            }
+            asa();
+        }
+    }
+
+    void asa()
+    {
+        // Si el objeto está activado, desactívalo y actualiza la variable booleana
+        if (alertObj != null && alertObj.activeSelf)
+        {
+            alertObj.SetActive(false);
+        }
+    }
+
+    void fsdafs()
+    {
+        GameObject newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
+
+        if (!newAlertObj.activeSelf)
+        {
+            newAlertObj.SetActive(true);
+            alertObj = newAlertObj; // Actualiza la referencia
         }
     }
 
