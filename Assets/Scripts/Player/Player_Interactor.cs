@@ -97,14 +97,11 @@ public class Player_Interactor : MonoBehaviour
 
     void HighlightNewAlert()
     {
-        var newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
-
-        if (!newAlertObj.activeSelf)
-        {
-            newAlertObj.SetActive(true);
-            lastAlert = newAlertObj; // Actualiza la referencia
-        }
+        lastAlert = AlertInFront();
+        lastAlert.SetActive(true);
     }
+
+    GameObject AlertInFront() => ElementInFront().transform.GetChild(0).gameObject;
 
     public void EnableInteracting()
     {
