@@ -89,7 +89,7 @@ namespace Player
                 }
 
             }
-            else//perdón
+            else
             {
                 if (!isOnMug)
                 {
