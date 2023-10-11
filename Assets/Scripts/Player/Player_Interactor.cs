@@ -16,7 +16,7 @@ public class Player_Interactor : MonoBehaviour
     [SerializeField] private float rayLenght;
     [SerializeField] private bool interacting;
 
-    private GameObject alertObj;
+    private GameObject lastAlert;
 
     private void Awake()
     {
@@ -93,13 +93,7 @@ public class Player_Interactor : MonoBehaviour
         }
     }
 
-    void DisableCurrentAlert()
-    {
-        if (alertObj != null && alertObj.activeSelf)
-        {
-            alertObj.SetActive(false);
-        }
-    }
+    void DisableCurrentAlert() => lastAlert?.SetActive(false);
 
     void HighlightNewAlert()
     {
@@ -108,7 +102,7 @@ public class Player_Interactor : MonoBehaviour
         if (!newAlertObj.activeSelf)
         {
             newAlertObj.SetActive(true);
-            alertObj = newAlertObj; // Actualiza la referencia
+            lastAlert = newAlertObj; // Actualiza la referencia
         }
     }
 
