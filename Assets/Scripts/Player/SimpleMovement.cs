@@ -69,13 +69,23 @@ namespace Player
 
         private void PlayerMoveImprove()
         {
-            Vector2 targetSpeed = new Vector2(movement.x, movement.y).normalized * speed;
+            Vector2 targetSpeed = TargetSpeed(movement, speed);
             Vector2 accelRate = new Vector2((Mathf.Abs(targetSpeed.x) > 0.01f) ? runAccelAmount : runDeccelAmount,
                 (Mathf.Abs(targetSpeed.y) > 0.01f) ? runAccelAmount : runDeccelAmount);
-            Vector2 speedDif = new Vector2(targetSpeed.x - rb2d.velocity.x, targetSpeed.y - rb2d.velocity.y);
+            Vector2 speedDif = SpeedDifference(targetSpeed, rb2d.velocity);
             Vector2 rate = new Vector2(speedDif.x * accelRate.x, speedDif.y * accelRate.y);
             
             rb2d.AddForce(rate, ForceMode2D.Force);
+        }
+
+        public static Vector2 SpeedDifference(Vector2 targetSpeed, Vector2 velocity)
+        {
+            return new Vector2(targetSpeed.x - velocity.x, targetSpeed.y - velocity.y);
+        }
+
+        public static Vector2 TargetSpeed(Vector2 movement, float speed)
+        {
+            return new Vector2(movement.x, movement.y).normalized * speed;
         }
 
         private void CheckFaceDirection()

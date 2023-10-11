@@ -76,10 +76,7 @@ public class Player_Interactor : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + (FacingDirection() * rayLenght), Color.red);
     }
 
-    Vector3 FacingDirection()
-    {
-        return new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
-    }
+    Vector3 FacingDirection() => playerMovement.faceDirection;
 
     private void ActiveAlert()
     {

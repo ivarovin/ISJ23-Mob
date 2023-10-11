@@ -103,7 +103,6 @@ namespace Player
                     playerMovement.speed = 0.5f;
                     TimePlayerCanSprint -= Time.deltaTime;
                 }
- 
             }
         }
     }
