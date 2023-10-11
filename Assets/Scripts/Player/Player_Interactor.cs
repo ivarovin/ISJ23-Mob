@@ -41,10 +41,10 @@ public class Player_Interactor : MonoBehaviour
         if (!interacting && IsInteractionRequested())
         {
             Interact();
-            DrawSight();
         }
 
         ActiveStuffs();
+        DrawSight();
     }
 
     bool IsInteractionRequested() =>
@@ -62,11 +62,13 @@ public class Player_Interactor : MonoBehaviour
 
     bool TryGetInteractable(out IInteractable interactable)
     {
-        RaycastHit2D hit =
-            Physics2D.Raycast(gameObject.transform.position, FacingDirection(), rayLenght, interactableLayer);
-
-        interactable =  hit.transform.gameObject.GetComponent<IInteractable>();
+        interactable = ElementInFront().transform.gameObject.GetComponent<IInteractable>();
         return interactable != null;
+    }
+
+    RaycastHit2D ElementInFront()
+    {
+        return Physics2D.Raycast(gameObject.transform.position, FacingDirection(), rayLenght, interactableLayer);
     }
 
     void DrawSight()
@@ -81,16 +83,10 @@ public class Player_Interactor : MonoBehaviour
 
     private void ActiveStuffs()
     {
-        var facingDirection = new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
-
-        RaycastHit2D hit =
-            Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
-
-        if (hit.collider != null)
+        if (ElementInFront().collider != null)
         {
-            GameObject newAlertObj = hit.transform.GetChild(0).gameObject;
+            GameObject newAlertObj = ElementInFront().transform.GetChild(0).gameObject;
 
-            // Si el objeto aún no está activado, actívalo y actualiza la variable booleana
             if (!newAlertObj.activeSelf)
             {
                 newAlertObj.SetActive(true);
@@ -105,8 +101,6 @@ public class Player_Interactor : MonoBehaviour
                 alertObj.SetActive(false);
             }
         }
-
-        Debug.DrawLine(transform.position, transform.position + (facingDirection * rayLenght), Color.red);
     }
 
     public void EnableInteracting()
