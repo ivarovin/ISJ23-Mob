@@ -7,11 +7,12 @@ public class Player_Interactor : MonoBehaviour
 {
     public static Player_Interactor instance;
 
-    [Header("[References]")]
-    [SerializeField] private Player.SimpleMovement playerMovement;
+    [Header("[References]")] [SerializeField]
+    private Player.SimpleMovement playerMovement;
 
-    [Header("[Configuration]")]
-    [SerializeField] private LayerMask interactableLayer;
+    [Header("[Configuration]")] [SerializeField]
+    private LayerMask interactableLayer;
+
     [SerializeField] private float rayLenght;
     [SerializeField] private bool interacting;
 
@@ -20,6 +21,7 @@ public class Player_Interactor : MonoBehaviour
     {
         CreateSingleton();
     }
+
     private void CreateSingleton()
     {
         if (instance != null && instance != this)
@@ -35,16 +37,16 @@ public class Player_Interactor : MonoBehaviour
 
     private void Update()
     {
-        if(interacting == false)
+        if (interacting == false)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && GameStateController.Instance.gameState == GameStateController.GameState.Gameplay)
+            if (Input.GetKeyDown(KeyCode.Space) &&
+                GameStateController.Instance.gameState == GameStateController.GameState.Gameplay)
             {
                 Interact();
             }
         }
-        
+
         ActiveStuffs();
-        
     }
 
     private GameObject alertObj;
@@ -53,9 +55,10 @@ public class Player_Interactor : MonoBehaviour
     {
         var facingDirection = new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
 
-        RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
+        RaycastHit2D hit =
+            Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
 
-        if(hit.collider != null)
+        if (hit.collider != null)
         {
             interacting = true;
             hit.transform.gameObject.GetComponent<IInteractable>().Interact();
@@ -63,12 +66,13 @@ public class Player_Interactor : MonoBehaviour
 
         Debug.DrawLine(transform.position, transform.position + (facingDirection * rayLenght), Color.red);
     }
-    
+
     private void ActiveStuffs()
     {
         var facingDirection = new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
 
-        RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
+        RaycastHit2D hit =
+            Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
 
         if (hit.collider != null)
         {
@@ -89,7 +93,7 @@ public class Player_Interactor : MonoBehaviour
                 alertObj.SetActive(false);
             }
         }
-        
+
         Debug.DrawLine(transform.position, transform.position + (facingDirection * rayLenght), Color.red);
     }
 
