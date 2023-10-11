@@ -16,6 +16,7 @@ public class Player_Interactor : MonoBehaviour
     [SerializeField] private float rayLenght;
     [SerializeField] private bool interacting;
 
+    private GameObject alertObj;
 
     private void Awake()
     {
@@ -37,34 +38,45 @@ public class Player_Interactor : MonoBehaviour
 
     private void Update()
     {
-        if (interacting == false)
+        if (!interacting && IsInteractionRequested())
         {
-            if (Input.GetKeyDown(KeyCode.Space) &&
-                GameStateController.Instance.gameState == GameStateController.GameState.Gameplay)
-            {
-                Interact();
-            }
+            Interact();
+            DrawSight();
         }
 
         ActiveStuffs();
     }
 
-    private GameObject alertObj;
+    bool IsInteractionRequested() =>
+        Input.GetKeyDown(KeyCode.Space) &&
+        GameStateController.Instance.gameState == GameStateController.GameState.Gameplay;
+
 
     private void Interact()
     {
-        var facingDirection = new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
+        if (!TryGetInteractable(out var interactable)) return;
 
+        interacting = true;
+        interactable.Interact();
+    }
+
+    bool TryGetInteractable(out IInteractable interactable)
+    {
         RaycastHit2D hit =
-            Physics2D.Raycast(gameObject.transform.position, facingDirection, rayLenght, interactableLayer);
+            Physics2D.Raycast(gameObject.transform.position, FacingDirection(), rayLenght, interactableLayer);
 
-        if (hit.collider != null)
-        {
-            interacting = true;
-            hit.transform.gameObject.GetComponent<IInteractable>().Interact();
-        }
+        interactable =  hit.transform.gameObject.GetComponent<IInteractable>();
+        return interactable != null;
+    }
 
-        Debug.DrawLine(transform.position, transform.position + (facingDirection * rayLenght), Color.red);
+    void DrawSight()
+    {
+        Debug.DrawLine(transform.position, transform.position + (FacingDirection() * rayLenght), Color.red);
+    }
+
+    Vector3 FacingDirection()
+    {
+        return new Vector3(playerMovement.faceDirection.x, playerMovement.faceDirection.y);
     }
 
     private void ActiveStuffs()
